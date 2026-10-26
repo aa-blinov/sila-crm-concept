@@ -49,15 +49,6 @@
   {@render children()}
 </main>
 
-<footer class="foot">
-  <div class="wrap foot__in">
-    <p>
-      Предложение владельцу. Все цифры взяты из работающей системы 26 октября 2026.
-      Данные клиентов не публикуются.
-    </p>
-    <p class="foot__meta">CRM: React, Strapi, пять серверов, одна база.</p>
-  </div>
-</footer>
 
 <nav class="tabs" aria-label="Разделы">
   {#each links as link}
@@ -156,27 +147,6 @@
     color: #fff;
   }
 
-  .foot {
-    border-top: 1px solid var(--line);
-    padding: 36px 0 calc(96px + env(safe-area-inset-bottom));
-    background: var(--surface);
-  }
-
-  .foot__in {
-    display: grid;
-    gap: 10px;
-    font-size: 0.875rem;
-    color: var(--muted);
-  }
-
-  .foot__in p {
-    max-width: 60ch;
-  }
-
-  .foot__meta {
-    color: var(--muted);
-  }
-
   /* нижние вкладки: телефон в руке, четыре раздела под большим пальцем */
   .tabs {
     position: fixed;
@@ -208,6 +178,10 @@
     background: var(--blue-wash);
   }
 
+  main {
+    padding-bottom: calc(84px + env(safe-area-inset-bottom));
+  }
+
   @media (min-width: 720px) {
     .nav {
       display: flex;
@@ -217,8 +191,5 @@
       display: none;
     }
 
-    .foot {
-      padding-bottom: 36px;
-    }
   }
 </style>

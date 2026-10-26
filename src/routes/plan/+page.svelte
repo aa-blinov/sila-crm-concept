@@ -148,6 +148,24 @@
   </div>
 </section>
 
+
+<section class="meta">
+  <div class="wrap">
+    <h2>Предложение владельцу</h2>
+    <p class="meta__lede">
+      Все цифры взяты из работающей системы 26 октября 2026. Данные клиентов не публикуются.
+    </p>
+    <dl class="meta__list">
+      <div><dt>Режим работы</dt><dd>только чтение: ни одной записи в CRM не изменено</dd></div>
+      <div><dt>Фронтенд</dt><dd>React 17 на Create React App, Ant Design, MobX, Apollo Client</dd></div>
+      <div><dt>Бэкенд</dt><dd>Strapi 4, GraphQL, авторизация по JWT</dd></div>
+      <div><dt>Веб-сервер</dt><dd>nginx версий 1.18 и 1.28 на разных машинах, только HTTP/1.1, сертификаты Let's Encrypt</dd></div>
+      <div><dt>Инфраструктура</dt><dd>пять серверов приложений на четырёх машинах, одна база, общее хранилище файлов</dd></div>
+      <div><dt>Объём данных</dt><dd>1 832 клиента, 31 581 тренировка, 4 490 абонементов, 1 419 рассылок, 2 675 аккаунтов, 10 залов, 3 816 файлов</dd></div>
+    </dl>
+  </div>
+</section>
+
 <style>
   .head {
     padding: clamp(32px, 7vw, 64px) 0 clamp(20px, 4vw, 32px);
@@ -324,4 +342,51 @@
 
   @media (min-width: 760px) {
   }
+  .meta {
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+  }
+
+  .meta h2 {
+    margin-bottom: 10px;
+  }
+
+  .meta__lede {
+    color: var(--muted);
+    font-size: 0.9375rem;
+    max-width: 62ch;
+    margin-bottom: clamp(20px, 3vw, 28px);
+  }
+
+  .meta__list {
+    margin: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .meta__list div {
+    display: grid;
+    gap: 4px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .meta__list dt {
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  .meta__list dd {
+    margin: 0;
+    color: var(--ink-2);
+    max-width: 66ch;
+  }
+
+  @media (min-width: 760px) {
+    .meta__list div {
+      grid-template-columns: 200px 1fr;
+      gap: 24px;
+      align-items: baseline;
+    }
+  }
+
 </style>

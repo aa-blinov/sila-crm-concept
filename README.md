@@ -62,7 +62,7 @@ src/
   app.css                 дизайн-токены и база
   app.html                шапка документа, подключение шрифтов
   routes/
-    +layout.svelte        шапка, подвал, нижние вкладки на телефоне
+    +layout.svelte        шапка и нижние вкладки на телефоне
     +page.svelte          обзор и схема входа
     problems/+page.svelte
     solution/+page.svelte
