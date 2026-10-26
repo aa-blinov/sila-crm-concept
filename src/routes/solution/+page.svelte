@@ -108,10 +108,6 @@
         </li>
       {/each}
     </ol>
-    <div class="cta">
-      <a class="btn btn--primary" href={u('/plan/')}>Смотреть этапы</a>
-      <a class="btn btn--ghost" href={u('/problems/')}>Вернуться к проблемам</a>
-    </div>
   </div>
 </section>
 
@@ -165,18 +161,14 @@
   }
 
   .note {
-    margin-top: 22px;
-    padding-top: 16px;
-    border-top: 1px solid var(--line);
+    margin-top: 20px;
     color: var(--ink-2);
     font-size: 0.9375rem;
     max-width: 64ch;
   }
 
   .band {
-    background: var(--surface);
     border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
   }
 
   .band__lede {
@@ -242,12 +234,6 @@
     max-width: 60ch;
   }
 
-  .cta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 30px;
-  }
 
   @media (min-width: 760px) {
     .rules {
