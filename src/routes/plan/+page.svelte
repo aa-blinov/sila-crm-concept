@@ -90,7 +90,7 @@
           <div class="stage__marker" aria-hidden="true"></div>
           <div class="stage__body">
             <div class="stage__top">
-              <h2>{stage.name}</h2>
+              <h3>{stage.name}</h3>
               <span class="stage__time">{stage.time}</span>
             </div>
             <p>{stage.text}</p>
@@ -226,7 +226,7 @@
     margin-bottom: 6px;
   }
 
-  .stage__top h2 {
+  .stage__top h3 {
     font-size: var(--step-2);
     line-height: 1.2;
   }
