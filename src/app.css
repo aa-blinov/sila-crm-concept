@@ -147,7 +147,7 @@ p {
   min-height: 48px;
   padding: 12px 22px;
   border: 1px solid transparent;
-  border-radius: var(--r-pill);
+  border-radius: 10px;
   font: 500 1rem/1 var(--sans);
   cursor: pointer;
   transition: transform 0.12s ease, background-color 0.16s ease, border-color 0.16s ease;
@@ -185,35 +185,10 @@ a:focus-visible {
 
 /* ---------- метки ---------- */
 .tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  border-radius: var(--r-pill);
+  display: inline-block;
   font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
+  color: var(--muted);
   white-space: nowrap;
-}
-
-.tag--risk {
-  background: var(--red-wash);
-  color: #a8020f;
-}
-
-.tag--money {
-  background: var(--green-wash);
-  color: var(--green);
-}
-
-.tag--time {
-  background: var(--orange-wash);
-  color: #a04a00;
-}
-
-.tag--data {
-  background: var(--blue-wash);
-  color: var(--blue-deep);
 }
 
 /* ---------- сетки ---------- */

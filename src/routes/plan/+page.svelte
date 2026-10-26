@@ -195,29 +195,14 @@
     height: 14px;
     border-radius: 50%;
     margin: 6px 0 0 5px;
-    border: 2px solid var(--line);
-    background: var(--paper);
+    border: 2px solid var(--ink);
+    background: var(--ink);
     z-index: 1;
   }
 
-  .stage--now .stage__marker {
-    border-color: var(--red);
-    background: var(--red);
-  }
-
-  .stage--money .stage__marker {
-    border-color: var(--green);
-    background: var(--green);
-  }
-
-  .stage--gate .stage__marker {
-    border-color: var(--ink);
-    background: var(--ink);
-  }
-
-  .stage--later .stage__marker {
-    border-color: var(--blue);
-    background: var(--surface);
+        .stage--later .stage__marker {
+    border-color: var(--muted);
+    background: var(--paper);
   }
 
   .stage__top {
@@ -266,17 +251,12 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    display: grid;
-    gap: 1px;
-    background: var(--line);
-    border: 1px solid var(--line);
-    border-radius: var(--r-md);
-    overflow: hidden;
+    border-top: 1px solid var(--line);
   }
 
   .gates li {
-    background: var(--surface);
-    padding: 16px 18px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
   }
 
   .gates h3 {
@@ -316,12 +296,12 @@
   }
 
   .money span {
-    font-family: var(--cond);
-    font-size: clamp(1.5rem, 4vw, 2rem);
-    font-weight: 700;
+    font-family: var(--sans);
+    font-size: 1.0625rem;
+    font-weight: 500;
     color: var(--ink);
     font-variant-numeric: tabular-nums;
-    min-width: 8ch;
+    min-width: 9ch;
   }
 
   .money p {
@@ -343,12 +323,5 @@
   }
 
   @media (min-width: 760px) {
-    .gates {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .gates li:last-child:nth-child(odd) {
-      grid-column: span 2;
-    }
   }
 </style>

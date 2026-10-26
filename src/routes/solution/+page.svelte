@@ -85,12 +85,11 @@
         </li>
       {/each}
     </ul>
-    <div class="numbers">
-      <div><span>+10</span><p>за тренировку, автоматически</p></div>
-      <div><span>+15</span><p>за навык, не больше двух в неделю</p></div>
-      <div><span>+10</span><p>за возвращение после перерыва</p></div>
-      <div><span>30</span><p>баллов стоит самая дешёвая награда</p></div>
-    </div>
+    <p class="after">
+      Цифры: посещение даёт +10 автоматически, навык +15 и не больше двух в неделю,
+      возвращение после перерыва +10. Самая дешёвая награда стоит 30 баллов, то есть
+      три тренировки.
+    </p>
   </div>
 </section>
 
@@ -167,12 +166,11 @@
 
   .note {
     margin-top: 22px;
-    padding: 16px 18px;
-    background: var(--blue-wash);
-    border-radius: var(--r-md);
-    color: var(--blue-deep);
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-2);
     font-size: 0.9375rem;
-    max-width: 66ch;
+    max-width: 64ch;
   }
 
   .band {
@@ -207,36 +205,6 @@
     color: var(--ink-2);
     font-size: 0.9375rem;
     max-width: 52ch;
-  }
-
-  .numbers {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1px;
-    background: var(--line);
-    border: 1px solid var(--line);
-    border-radius: var(--r-md);
-    overflow: hidden;
-    margin-top: clamp(28px, 4vw, 40px);
-  }
-
-  .numbers div {
-    background: var(--surface);
-    padding: 18px;
-  }
-
-  .numbers span {
-    font-family: var(--cond);
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--blue);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .numbers p {
-    font-size: 0.8125rem;
-    color: var(--muted);
-    margin-top: 4px;
   }
 
   .metrics {
@@ -283,12 +251,8 @@
 
   @media (min-width: 760px) {
     .rules {
-      grid-template-columns: repeat(2, 1fr);
-      gap: clamp(20px, 3vw, 32px) clamp(28px, 5vw, 56px);
+      gap: clamp(18px, 2.5vw, 24px);
     }
 
-    .numbers {
-      grid-template-columns: repeat(4, 1fr);
-    }
   }
 </style>

@@ -1,60 +1,18 @@
 <script>
   import { u } from '$lib/url';
-  let mode = $state('now');
-  let cursor = $state(-1);
-  let tries = $state(0);
-  let lost = $state(0);
-  let running = $state(false);
-  let result = $state(null);
 
-  const nodes = ['sila-crm.ru', 'c0', 'c1', 'c2', 'c3'];
-  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
-  async function run() {
-    if (running) return;
-    running = true;
-    result = null;
-
-    for (let i = 0; i < 11; i++) {
-      cursor = Math.floor(Math.random() * nodes.length);
-      await sleep(45 + i * 9);
-    }
-
-    const idx = mode === 'now' ? (Math.random() < 0.22 ? 0 : 1 + Math.floor(Math.random() * 4)) : 0;
-    cursor = idx;
-    tries += 1;
-
-    if (mode === 'now') {
-      if (idx === 0) {
-        result = { kind: 'loop', note: 'Перебросило на ту же страницу. По кругу.' };
-      } else {
-        lost += 1;
-        result = { kind: 'lost', note: 'Сессия осталась на другом сервере. Пароль заново.' };
-      }
-    } else {
-      result = { kind: 'ok', note: 'Один адрес. Сессия на месте.' };
-    }
-    running = false;
-  }
-
-  function switchMode(next) {
-    mode = next;
-    result = null;
-    cursor = -1;
-  }
-
-  const facts = [
+  const findings = [
     {
-      title: 'Система собрана правильно',
-      text: 'Одна база, пять серверов, общее хранилище файлов. Данные на всех серверах совпадают. Переписывать нечего.'
+      title: 'Вход уводит на другой домен',
+      text: 'Основной адрес не открывает CRM. Он замеряет пять серверов и перекидывает на самый быстрый. Сессия остаётся на прежнем сервере, поэтому после перекидывания пароль приходится вводить заново. Если быстрее всех окажется главный сервер, страница перекинет на саму себя.'
     },
     {
-      title: 'Ломается вход',
-      text: 'Основной адрес не открывает CRM, а выбирает сервер за сотрудника. Отсюда разлогины, циклы и ссылки на оплату, которые не открываются.'
+      title: 'Часть карточек клиентов не открывается',
+      text: 'Вместо карточки белый лист: ни сообщения, ни кнопки. Причина в одной строке кода, которой не хватает проверки на пустое имя. Таких записей 96. Общей защиты от подобных сбоев в приложении нет, поэтому любая мелочь в данных даёт пустоту.'
     },
     {
-      title: 'Деньги не видны',
-      text: 'Чтобы найти клиента с истёкшим абонементом, нужно листать 225 страниц без фильтров. Отчёт говорит «не продлили 30», но не говорит, кто эти 30.'
+      title: 'Продление абонемента не управляется',
+      text: 'Чтобы найти клиента с истёкшим абонементом, нужно листать 225 страниц без единого фильтра. Отчёт показывает «не продлили 30» по залу, но не показывает, кто эти 30 и что с ними делать. Задача «нет абонемента» создаётся автоматически и теряется среди 160 других.'
     }
   ];
 </script>
@@ -73,134 +31,79 @@
       <h1>
         <span>Пять серверов.</span>
         <span>Один вход.</span>
-        <span>Ноль предсказуемости.</span>
       </h1>
       <p class="lede">
-        Разобрали CRM «Сила Скилла» целиком: пять серверов, тридцать экранов, 1 832 клиента.
-        Вот что нашли и что предлагаем делать.
+        Разобрал CRM «Сила Скилла» целиком: пять серверов, тридцать экранов, 1 832 клиента.
+        Ниже то, что нашёл, и порядок, в котором это стоит чинить.
       </p>
-      <div class="hero__actions">
-        <a class="btn btn--primary" href={u('/problems/')}>Что нашли</a>
-        <a class="btn btn--ghost" href={u('/plan/')}>План работ</a>
-      </div>
+      <p class="hero__links">
+        <a href={u('/problems/')}>Что ещё нашёл</a>
+        <span aria-hidden="true">·</span>
+        <a href={u('/plan/')}>План и сроки</a>
+      </p>
     </div>
 
-    <div class="demo" aria-labelledby="demo-title">
-      <div class="demo__head">
-        <span class="demo__dot" aria-hidden="true"></span>
-        <h2 id="demo-title">Как устроен вход</h2>
-        <div class="demo__switch" role="group" aria-label="Режим схемы">
-          <button
-            type="button"
-            class:on={mode === 'now'}
-            onclick={() => switchMode('now')}
-            aria-pressed={mode === 'now'}>Сейчас</button
-          >
-          <button
-            type="button"
-            class:on={mode === 'fixed'}
-            onclick={() => switchMode('fixed')}
-            aria-pressed={mode === 'fixed'}>После правки</button
-          >
-        </div>
+    <figure class="shot">
+      <div class="shot__frame">
+        <img
+          src={u('/shots/chooser.webp')}
+          alt="Страница с индикатором загрузки и надписью «Загрузка»"
+          width="1280"
+          height="800"
+          decoding="async"
+        />
       </div>
-
-      <ul class="demo__nodes" aria-hidden="true">
-        {#each nodes as node, i}
-          <li class:hot={cursor === i}>{node}</li>
-        {/each}
-      </ul>
-
-      <div class="demo__stage">
-        {#if result}
-          <p class="demo__node" class:demo__node--bad={result.kind !== 'ok'}>
-            {result.kind === 'loop' ? 'sila-crm.ru' : mode === 'now' ? nodes[cursor] : 'sila-crm.ru'}
-          </p>
-          <p class="demo__note">{result.note}</p>
-        {:else}
-          <p class="demo__node demo__node--idle">{running ? 'выбираем…' : 'нажмите «Войти»'}</p>
-          <p class="demo__note">
-            {mode === 'now'
-              ? 'Сервер выбирается заново при каждом входе'
-              : 'Адрес один, выбирать нечего'}
-          </p>
-        {/if}
-      </div>
-
-      <div class="demo__foot">
-        <button class="btn btn--primary demo__btn" type="button" onclick={run} disabled={running}>
-          Войти
-        </button>
-        <dl class="demo__stats">
-          <div><dt>входов</dt><dd>{tries}</dd></div>
-          <div><dt>{mode === 'now' ? 'потеряно сессий' : 'сохранено сессий'}</dt><dd>{mode === 'now' ? lost : tries}</dd></div>
-        </dl>
-      </div>
-
-      <p class="demo__caption">Схема работы диспетчера, не настоящий вход в систему.</p>
-    </div>
+      <figcaption>
+        Основной адрес CRM. Это не ошибка сети и не долгая загрузка: страница сама выбирает
+        сервер и уводит на другой домен. В моём прогоне ушла на c0.sila-crm.ru.
+      </figcaption>
+    </figure>
   </div>
 </section>
 
-<section class="section facts">
+<section class="section section--tight">
+  <div class="wrap prose">
+    <p>
+      Система собрана правильно: одна база на пять серверов, данные на всех совпадают,
+      файлы доступны отовсюду. Переписывать нечего. Ломается вход, и не хватает одной вещи,
+      которая приносит деньги: видимости продлений.
+    </p>
+  </div>
+</section>
+
+<section class="section findings">
   <div class="wrap">
-    <h2>Три вывода из аудита</h2>
-    <ol class="facts__list">
-      {#each facts as fact}
-        <li class="facts__item">
-          <div>
-            <h3>{fact.title}</h3>
-            <p>{fact.text}</p>
-          </div>
+    <h2>Что именно не работает</h2>
+    <ol class="findings__list">
+      {#each findings as f}
+        <li>
+          <h3>{f.title}</h3>
+          <p>{f.text}</p>
         </li>
       {/each}
     </ol>
-  </div>
-</section>
-
-<section class="section next">
-  <div class="wrap">
-    <h2>Что внутри</h2>
-    <ul class="next__list">
-      <li>
-        <a href={u('/problems/')}>
-          <span class="next__label">Проблемы</span>
-          <span class="next__desc">Шесть находок с ценой каждой. Что ломает работу и сколько это стоит в деньгах и доверии.</span>
-          <span class="next__arrow" aria-hidden="true">→</span>
-        </a>
-      </li>
-      <li>
-        <a href={u('/solution/')}>
-          <span class="next__label">Решение</span>
-          <span class="next__desc">Три сборки вместо четырёх, геймификация без рейтингов, метрики, которые считаются из текущих данных.</span>
-          <span class="next__arrow" aria-hidden="true">→</span>
-        </a>
-      </li>
-      <li>
-        <a href={u('/plan/')}>
-          <span class="next__label">План</span>
-          <span class="next__desc">Этапы со сроками, ворота перед разработкой приложений и арифметика на ваших цифрах.</span>
-          <span class="next__arrow" aria-hidden="true">→</span>
-        </a>
-      </li>
-    </ul>
+    <p class="findings__more">
+      Все находки с ценой каждой, экранами и оценкой работ: <a href={u('/problems/')}>разбор</a>.
+      Что предлагаю и в каком порядке: <a href={u('/plan/')}>план</a>.
+    </p>
   </div>
 </section>
 
 <style>
   .hero {
-    padding: clamp(24px, 5vw, 48px) 0 clamp(24px, 4vw, 44px);
+    padding: clamp(24px, 5vw, 56px) 0 clamp(20px, 3vw, 32px);
   }
 
   .hero__grid {
     display: grid;
-    gap: clamp(28px, 5vw, 44px);
+    gap: clamp(24px, 4vw, 44px);
     align-items: start;
   }
 
   .hero__text {
     display: grid;
-    gap: 20px;
+    gap: 18px;
+    align-content: start;
   }
 
   .hero h1 {
@@ -212,269 +115,119 @@
     display: block;
   }
 
-  .hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 4px;
-  }
-
-  /* ---------- схема входа ---------- */
-  .demo {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--r-lg);
-    box-shadow: var(--shadow-2);
-    padding: 18px;
-    display: grid;
-    gap: 16px;
-  }
-
-  .demo__head {
+  .hero__links {
     display: flex;
     align-items: center;
-    gap: 8px 10px;
-    flex-wrap: wrap;
-  }
-
-  .demo__dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--red);
-    flex: none;
-  }
-
-  .demo__head h2 {
-    font-family: var(--sans);
+    gap: 10px;
     font-size: 0.9375rem;
-    font-weight: 500;
-    letter-spacing: 0;
-    flex: 1 1 150px;
-  }
-
-  .demo__switch {
-    margin-left: auto;
-  }
-
-  .demo__switch {
-    display: inline-flex;
-    padding: 3px;
-    background: var(--paper);
-    border-radius: var(--r-pill);
-    border: 1px solid var(--line-soft);
-  }
-
-  .demo__switch button {
-    border: 0;
-    background: transparent;
-    padding: 7px 12px;
-    border-radius: var(--r-pill);
-    font: 500 0.75rem/1 var(--sans);
     color: var(--muted);
-    cursor: pointer;
-    min-height: 30px;
   }
 
-  .demo__switch button.on {
-    background: var(--ink);
-    color: #fff;
+  .hero__links a {
+    color: var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 1px;
   }
 
-  .demo__nodes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    list-style: none;
+  .hero__links a:hover {
+    color: var(--blue-deep);
+    border-color: var(--blue-deep);
+  }
+
+  /* настоящий экран вместо нарисованной схемы */
+  .shot {
     margin: 0;
-    padding: 0;
-  }
-
-  .demo__nodes li {
-    padding: 6px 10px;
-    border-radius: var(--r-pill);
-    border: 1px solid var(--line);
-    font-size: 0.75rem;
-    color: var(--muted);
-    transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .demo__nodes li.hot {
-    background: var(--blue);
-    border-color: var(--blue);
-    color: #fff;
-  }
-
-  .demo__stage {
     display: grid;
-    gap: 4px;
-    padding: 14px 16px;
-    background: var(--paper);
+    gap: 12px;
+  }
+
+  .shot__frame {
+    border: 1px solid var(--line);
     border-radius: var(--r-md);
-    min-height: 92px;
-    align-content: center;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: var(--shadow-1);
   }
 
-  .demo__node {
-    font-family: var(--cond);
-    font-size: clamp(1.5rem, 5vw, 1.9rem);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    font-variant-numeric: tabular-nums;
+  .shot__frame img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 
-  .demo__node--idle {
-    color: var(--muted);
-    font-size: 1.25rem;
-    font-family: var(--sans);
-    font-weight: 400;
-  }
-
-  .demo__node--bad {
-    color: var(--red);
-  }
-
-  .demo__note {
+  .shot figcaption {
     font-size: 0.8125rem;
     color: var(--muted);
+    line-height: 1.5;
+    max-width: 52ch;
   }
 
-  .demo__foot {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
+  .prose p {
+    max-width: 62ch;
+    color: var(--ink-2);
+    font-size: var(--step-1);
+    line-height: 1.55;
   }
 
-  .demo__btn {
-    flex: 1;
-    min-width: 140px;
+  .findings h2 {
+    margin-bottom: clamp(18px, 3vw, 26px);
   }
 
-  .demo__btn:disabled {
-    opacity: 0.6;
-    cursor: default;
-  }
-
-  .demo__stats {
-    display: flex;
-    gap: 18px;
+  .findings__list {
+    list-style: none;
+    counter-reset: f;
     margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
   }
 
-  .demo__stats dt {
-    font-size: 0.6875rem;
+  .findings__list li {
+    counter-increment: f;
+    display: grid;
+    gap: 8px;
+    padding: clamp(20px, 3vw, 28px) 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .findings__list h3 {
+    font-family: var(--sans);
+    font-size: var(--step-2);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+
+  .findings__list h3::before {
+    content: counter(f) '. ';
     color: var(--muted);
-    text-transform: lowercase;
-  }
-
-  .demo__stats dd {
-    margin: 0;
-    font-family: var(--cond);
-    font-size: 1.25rem;
-    font-weight: 700;
     font-variant-numeric: tabular-nums;
   }
 
-  .demo__caption {
-    font-size: 0.75rem;
-    color: var(--muted);
-  }
-
-  /* ---------- выводы ---------- */
-  .facts {
-    padding-top: clamp(12px, 2.5vw, 28px);
-  }
-
-  .facts h2 {
-    margin-bottom: clamp(20px, 3vw, 32px);
-  }
-
-  .facts__list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 0;
-    border-top: 1px solid var(--line);
-  }
-
-  .facts__item {
-    display: grid;
-    gap: clamp(16px, 3vw, 28px);
-    padding: clamp(22px, 3.5vw, 34px) 0;
-    border-bottom: 1px solid var(--line);
-    align-items: start;
-  }
-
-  .facts__item h3 {
-    margin-bottom: 8px;
-  }
-
-  .facts__item p {
+  .findings__list p {
     color: var(--ink-2);
-    max-width: 60ch;
+    max-width: 64ch;
   }
 
-  /* ---------- навигация ---------- */
-  .next h2 {
-    margin-bottom: clamp(20px, 3vw, 30px);
-  }
-
-  .next__list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-top: 1px solid var(--line);
-  }
-
-  .next__list a {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-areas: 'label arrow' 'desc desc';
-    gap: 6px 16px;
-    padding: clamp(18px, 3vw, 26px) 0;
-    border-bottom: 1px solid var(--line);
-    transition: color 0.15s ease;
-  }
-
-  .next__list a:hover {
-    color: var(--blue-deep);
-  }
-
-  .next__label {
-    grid-area: label;
-    font-family: var(--cond);
-    font-size: var(--step-3);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
-
-  .next__desc {
-    grid-area: desc;
-    color: var(--ink-2);
+  .findings__more {
+    margin-top: 22px;
     font-size: 0.9375rem;
-    max-width: 62ch;
+    color: var(--muted);
+    max-width: 64ch;
   }
 
-  .next__arrow {
-    grid-area: arrow;
-    align-self: center;
-    font-size: 1.25rem;
-    color: var(--muted);
+  .findings__more a {
+    color: var(--ink);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .findings__more a:hover {
+    border-color: var(--ink);
   }
 
   @media (min-width: 900px) {
     .hero__grid {
-      grid-template-columns: 1.05fr 0.95fr;
-      align-items: center;
-    }
-
-    .next__list a {
-      grid-template-columns: 220px 1fr auto;
-      grid-template-areas: 'label desc arrow';
-      align-items: center;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: clamp(32px, 5vw, 64px);
     }
   }
 </style>
