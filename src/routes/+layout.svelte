@@ -8,7 +8,7 @@
   const links = [
     { href: u('/'), label: 'Обзор' },
     { href: u('/problems/'), label: 'Проблемы' },
-    { href: u('/solution/'), label: 'Решение' },
+    { href: u('/solution/'), label: 'Что делать' },
     { href: u('/plan/'), label: 'План' }
   ];
 

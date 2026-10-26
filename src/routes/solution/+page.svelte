@@ -33,23 +33,55 @@
 </script>
 
 <svelte:head>
-  <title>Что предлагаем: три сборки, геймификация, метрики</title>
-  <meta name="description" content="Тренер, семья и владелец: три сборки вместо четырёх. Геймификация без рейтингов и три метрики, которые считаются из текущих данных." />
+  <title>Что делать: вход, продления, приложения</title>
+  <meta name="description" content="Порядок работ: сначала один адрес и экран «кому продлевать», потом приложения для тренера и семьи, геймификация и метрики." />
 </svelte:head>
 
 <section class="head">
   <div class="wrap">
-    <h1>Что предлагаем</h1>
+    <h1>Что делать</h1>
     <p class="lede">
-      Систему не переписываем. База, данные и схема остаются. Меняем вход, добавляем видимость
-      денег и собираем приложения там, где они действительно нужны.
+      Систему не переписываем: база, данные и схема остаются. Порядок тот же, что в разборе:
+      сначала вход и продления, потом приложения.
     </p>
   </div>
 </section>
 
 <section class="section">
   <div class="wrap">
-    <h2>Три сборки вместо четырёх</h2>
+    <h2>Сначала вход и продления</h2>
+    <p class="band__lede">
+      Четыре правки закрывают то, что стоит денег и доверия. Ни одна не требует
+      переписывать систему.
+    </p>
+    <ol class="fix">
+      <li>
+        <h3>Один адрес вместо пяти</h3>
+        <p>Сотрудник входит туда, куда вошёл: сессия не теряется, ссылки клиентам уходят с одного домена.</p>
+        <span class="fix__time">2 дня</span>
+      </li>
+      <li>
+        <h3>Экран «кому продлевать»</h3>
+        <p>Список с фильтром по залу и сортировкой по сроку, кнопка написать. Плюс фильтры в задачах.</p>
+        <span class="fix__time">2–3 недели</span>
+      </li>
+      <li>
+        <h3>Карточки перестают падать</h3>
+        <p>Проверка на пустое имя и общая защита страниц: вместо белого листа сообщение и кнопка.</p>
+        <span class="fix__time">6 часов</span>
+      </li>
+      <li>
+        <h3>Данные закрыты, клиенты видны</h3>
+        <p>Публичный доступ только к нужным запросам. В списке «Клиенты» появляются все 1 832, включая 33 без аккаунта.</p>
+        <span class="fix__time">4–6 дней</span>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <h2>Потом приложения: тренер и семья</h2>
     <ul class="roles">
       {#each roles as role}
         <li>
@@ -241,4 +273,51 @@
     }
 
   }
+  .fix {
+    list-style: none;
+    counter-reset: fix;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .fix li {
+    counter-increment: fix;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4px 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .fix h3 {
+    grid-column: 1;
+    font-family: var(--sans);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  .fix h3::before {
+    content: counter(fix) '. ';
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fix p {
+    grid-column: 1;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+    max-width: 60ch;
+  }
+
+  .fix__time {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 0.8125rem;
+    color: var(--muted);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
 </style>

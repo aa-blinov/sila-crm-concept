@@ -1,20 +1,5 @@
 <script>
   import { u } from '$lib/url';
-
-  const findings = [
-    {
-      title: 'Вход уводит на другой домен',
-      text: 'Основной адрес не открывает CRM. Он замеряет пять серверов и перекидывает на самый быстрый. Сессия остаётся на прежнем сервере, поэтому после перекидывания пароль приходится вводить заново. Если быстрее всех окажется главный сервер, страница перекинет на саму себя.'
-    },
-    {
-      title: 'Часть карточек клиентов не открывается',
-      text: 'Вместо карточки белый лист: ни сообщения, ни кнопки. Причина в одной строке кода, которой не хватает проверки на пустое имя. Таких записей 96. Общей защиты от подобных сбоев в приложении нет, поэтому любая мелочь в данных даёт пустоту.'
-    },
-    {
-      title: 'Продление абонемента не управляется',
-      text: 'Чтобы найти клиента с истёкшим абонементом, нужно листать 225 страниц без единого фильтра. Отчёт показывает «не продлили 30» по залу, но не показывает, кто эти 30 и что с ними делать. Задача «нет абонемента» создаётся автоматически и теряется среди 160 других.'
-    }
-  ];
 </script>
 
 <svelte:head>
@@ -34,12 +19,7 @@
       </h1>
       <p class="lede">
         Разобрал CRM «Сила Скилла» целиком: пять серверов, тридцать экранов, 1 832 клиента.
-        Ниже то, что нашёл, и порядок, в котором это стоит чинить.
-      </p>
-      <p class="hero__links">
-        <a href={u('/problems/')}>Что ещё нашёл</a>
-        <span aria-hidden="true">·</span>
-        <a href={u('/plan/')}>План и сроки</a>
+        Данные в порядке, система собрана правильно. Проблемы в другом месте.
       </p>
     </div>
 
@@ -54,44 +34,59 @@
         />
       </div>
       <figcaption>
-        Основной адрес CRM. Это не ошибка сети и не долгая загрузка: страница сама выбирает
-        сервер и уводит на другой домен. В моём прогоне ушла на c0.sila-crm.ru.
+        Так выглядит вход в CRM с основного адреса. Это не медленная загрузка: страница
+        сама выбирает сервер и уводит на другой домен. В моём прогоне ушла на c0.sila-crm.ru.
       </figcaption>
     </figure>
   </div>
 </section>
 
 <section class="section section--tight">
-  <div class="wrap prose">
-    <p>
-      Система собрана правильно: одна база на пять серверов, данные на всех совпадают,
-      файлы доступны отовсюду. Переписывать нечего. Ломается вход, и не хватает одной вещи,
-      которая приносит деньги: видимости продлений.
+  <div class="wrap">
+    <h2 class="lead">Самое дорогое — не вход</h2>
+    <p class="prose">
+      Вход раздражает, но денег стоит другое. В системе 4 490 абонементов, и чтобы найти
+      клиента с истёкшим, нужно листать 225 страниц без единого фильтра. Отчёт показывает
+      «не продлили 30» по залу, но не показывает, кто эти тридцать и что с ними делать.
+      Автоматика создаёт задачу «нет абонемента», и она теряется среди 160 других.
+    </p>
+    <p class="prose">
+      Одно продление безлимита — 55 000 ₽. Три возвращённых клиента в месяц закрывают
+      работу над этим с запасом. Поэтому в плане первой идёт не разработка приложений,
+      а видимость продлений.
     </p>
   </div>
 </section>
 
-<section class="section findings">
+<section class="section">
   <div class="wrap">
-    <h2>Что именно не работает</h2>
-    <ol class="findings__list">
-      {#each findings as f}
-        <li>
-          <h3>{f.title}</h3>
-          <p>{f.text}</p>
-        </li>
-      {/each}
+    <h2>Как читать дальше</h2>
+    <ol class="route">
+      <li>
+        <a href={u('/problems/')}>
+          <span class="route__n">Разбор</span>
+          <span class="route__t">Пять проблем по убыванию цены. С экранами и оценкой работ.</span>
+        </a>
+      </li>
+      <li>
+        <a href={u('/solution/')}>
+          <span class="route__n">Что делать</span>
+          <span class="route__t">В том же порядке: сначала вход и продления, потом приложения.</span>
+        </a>
+      </li>
+      <li>
+        <a href={u('/plan/')}>
+          <span class="route__n">План</span>
+          <span class="route__t">Этапы, ворота перед разработкой приложений и арифметика.</span>
+        </a>
+      </li>
     </ol>
-    <p class="findings__more">
-      Все находки с ценой каждой, экранами и оценкой работ: <a href={u('/problems/')}>разбор</a>.
-      Что предлагаю и в каком порядке: <a href={u('/plan/')}>план</a>.
-    </p>
   </div>
 </section>
 
 <style>
   .hero {
-    padding: clamp(24px, 5vw, 56px) 0 clamp(20px, 3vw, 32px);
+    padding: clamp(24px, 5vw, 56px) 0 clamp(16px, 3vw, 28px);
   }
 
   .hero__grid {
@@ -115,26 +110,9 @@
     display: block;
   }
 
-  .hero__links {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.9375rem;
-    color: var(--muted);
-  }
 
-  .hero__links a {
-    color: var(--ink);
-    border-bottom: 1px solid var(--ink);
-    padding-bottom: 1px;
-  }
 
-  .hero__links a:hover {
-    color: var(--blue-deep);
-    border-color: var(--blue-deep);
-  }
 
-  /* настоящий экран вместо нарисованной схемы */
   .shot {
     margin: 0;
     display: grid;
@@ -146,7 +124,6 @@
     border-radius: var(--r-md);
     overflow: hidden;
     background: #fff;
-    box-shadow: var(--shadow-1);
   }
 
   .shot__frame img {
@@ -162,66 +139,55 @@
     max-width: 52ch;
   }
 
-  .prose p {
-    max-width: 62ch;
+  .lead {
+    margin-bottom: 16px;
+  }
+
+  .prose {
     color: var(--ink-2);
-    font-size: var(--step-1);
-    line-height: 1.55;
+    max-width: 64ch;
   }
 
-  .findings h2 {
-    margin-bottom: clamp(18px, 3vw, 26px);
+  .prose + .prose {
+    margin-top: 14px;
   }
 
-  .findings__list {
+  .route {
     list-style: none;
-    counter-reset: f;
     margin: 0;
     padding: 0;
     border-top: 1px solid var(--line);
   }
 
-  .findings__list li {
-    counter-increment: f;
+  .route a {
     display: grid;
-    gap: 8px;
-    padding: clamp(20px, 3vw, 28px) 0;
+    grid-template-columns: 150px 1fr;
+    gap: 8px 20px;
+    padding: 16px 0;
     border-bottom: 1px solid var(--line);
+    align-items: baseline;
   }
 
-  .findings__list h3 {
-    font-family: var(--sans);
-    font-size: var(--step-2);
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    line-height: 1.25;
+  .route__n {
+    font-family: var(--cond);
+    font-size: 1.0625rem;
+    font-weight: 700;
   }
 
-  .findings__list h3::before {
-    content: counter(f) '. ';
-    color: var(--muted);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .findings__list p {
+  .route__t {
     color: var(--ink-2);
-    max-width: 64ch;
-  }
-
-  .findings__more {
-    margin-top: 22px;
     font-size: 0.9375rem;
-    color: var(--muted);
-    max-width: 64ch;
   }
 
-  .findings__more a {
-    color: var(--ink);
-    border-bottom: 1px solid var(--line);
+  .route a:hover .route__n {
+    color: var(--blue-deep);
   }
 
-  .findings__more a:hover {
-    border-color: var(--ink);
+  @media (max-width: 560px) {
+    .route a {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
   }
 
   @media (min-width: 900px) {
