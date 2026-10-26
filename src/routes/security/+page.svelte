@@ -173,6 +173,19 @@
   </div>
 </section>
 
+<section class="section section--tight">
+  <div class="wrap">
+    <h2 class="block">А после?</h2>
+    <p class="intro">
+      Закрытые дыры не остаются закрытыми: обновления, новые функции и смена сотрудников
+      возвращают их. Поэтому в плане есть постоянный режим: обновления раз в месяц, проверка
+      копий раз в неделю, сигналы о подозрительных входах и внешняя проверка раз в квартал.
+      Четыре–шесть часов в месяц.
+    </p>
+    <p class="intro"><a class="lnk" href={u('/plan/')}>Постоянный режим в плане</a></p>
+  </div>
+</section>
+
 <section class="section note">
   <div class="wrap">
     <p>
@@ -320,6 +333,12 @@
     height: 6px;
     border-radius: 50%;
     background: var(--green);
+  }
+
+  .lnk {
+    color: var(--blue);
+    border-bottom: 1px solid var(--blue);
+    padding-bottom: 1px;
   }
 
   .note {
