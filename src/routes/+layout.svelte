@@ -1,25 +1,27 @@
 <script>
   import '../app.css';
   import { page } from '$app/stores';
+  import { u } from '$lib/url';
 
   let { children } = $props();
 
   const links = [
-    { href: '/', label: 'Обзор' },
-    { href: '/problems/', label: 'Проблемы' },
-    { href: '/solution/', label: 'Решение' },
-    { href: '/plan/', label: 'План' }
+    { href: u('/'), label: 'Обзор' },
+    { href: u('/problems/'), label: 'Проблемы' },
+    { href: u('/solution/'), label: 'Решение' },
+    { href: u('/plan/'), label: 'План' }
   ];
 
+  const home = u('/');
   const isActive = (href) =>
-    href === '/' ? $page.url.pathname === '/' : $page.url.pathname.startsWith(href);
+    href === home ? $page.url.pathname === home : $page.url.pathname.startsWith(href);
 </script>
 
 <a class="skip" href="#main">К содержанию</a>
 
 <header class="bar">
   <div class="bar__in wrap">
-    <a class="brand" href="/" aria-label="Сила Скилла, разбор продукта">
+    <a class="brand" href={u('/')} aria-label="Сила Скилла, разбор продукта">
       <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
         <rect width="32" height="32" rx="9" fill="#2d68c4" />
         <rect x="8" y="18" width="4" height="7" rx="1.4" fill="#fff" opacity="0.55" />

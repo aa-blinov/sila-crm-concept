@@ -1,4 +1,5 @@
 <script>
+  import { u } from '$lib/url';
   let mode = $state('now');
   let cursor = $state(-1);
   let tries = $state(0);
@@ -79,8 +80,8 @@
         Вот что нашли и что предлагаем делать.
       </p>
       <div class="hero__actions">
-        <a class="btn btn--primary" href="/problems/">Что нашли</a>
-        <a class="btn btn--ghost" href="/plan/">План работ</a>
+        <a class="btn btn--primary" href={u('/problems/')}>Что нашли</a>
+        <a class="btn btn--ghost" href={u('/plan/')}>План работ</a>
       </div>
     </div>
 
@@ -162,21 +163,21 @@
     <h2>Что внутри</h2>
     <ul class="next__list">
       <li>
-        <a href="/problems/">
+        <a href={u('/problems/')}>
           <span class="next__label">Проблемы</span>
           <span class="next__desc">Шесть находок с ценой каждой. Что ломает работу и сколько это стоит в деньгах и доверии.</span>
           <span class="next__arrow" aria-hidden="true">→</span>
         </a>
       </li>
       <li>
-        <a href="/solution/">
+        <a href={u('/solution/')}>
           <span class="next__label">Решение</span>
           <span class="next__desc">Три сборки вместо четырёх, геймификация без рейтингов, метрики, которые считаются из текущих данных.</span>
           <span class="next__arrow" aria-hidden="true">→</span>
         </a>
       </li>
       <li>
-        <a href="/plan/">
+        <a href={u('/plan/')}>
           <span class="next__label">План</span>
           <span class="next__desc">Этапы со сроками, ворота перед разработкой приложений и арифметика на ваших цифрах.</span>
           <span class="next__arrow" aria-hidden="true">→</span>

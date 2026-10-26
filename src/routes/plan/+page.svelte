@@ -1,4 +1,5 @@
 <script>
+  import { u } from '$lib/url';
   const stages = [
     {
       name: 'Резервные копии',
@@ -141,8 +142,8 @@
       а приложение такими деньгами не измеряется.
     </p>
     <div class="cta">
-      <a class="btn btn--primary" href="/solution/">Что входит в решение</a>
-      <a class="btn btn--ghost" href="/problems/">Что нашли</a>
+      <a class="btn btn--primary" href={u('/solution/')}>Что входит в решение</a>
+      <a class="btn btn--ghost" href={u('/problems/')}>Что нашли</a>
     </div>
   </div>
 </section>

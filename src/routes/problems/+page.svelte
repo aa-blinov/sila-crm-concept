@@ -1,4 +1,5 @@
 <script>
+  import { u } from '$lib/url';
   const items = [
     {
       tag: 'риск',
@@ -91,8 +92,8 @@
       затем то, что возвращает деньги, и только потом приложения.
     </p>
     <div class="cta">
-      <a class="btn btn--primary" href="/solution/">Что предлагаем</a>
-      <a class="btn btn--ghost" href="/plan/">Сколько это займёт</a>
+      <a class="btn btn--primary" href={u('/solution/')}>Что предлагаем</a>
+      <a class="btn btn--ghost" href={u('/plan/')}>Сколько это займёт</a>
     </div>
   </div>
 </section>

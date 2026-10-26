@@ -1,4 +1,5 @@
 <script>
+  import { u } from '$lib/url';
   const roles = [
     {
       name: 'Тренер',
@@ -109,8 +110,8 @@
       {/each}
     </ol>
     <div class="cta">
-      <a class="btn btn--primary" href="/plan/">Смотреть этапы</a>
-      <a class="btn btn--ghost" href="/problems/">Вернуться к проблемам</a>
+      <a class="btn btn--primary" href={u('/plan/')}>Смотреть этапы</a>
+      <a class="btn btn--ghost" href={u('/problems/')}>Вернуться к проблемам</a>
     </div>
   </div>
 </section>
