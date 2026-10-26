@@ -260,4 +260,13 @@
       margin-top: 4px;
     }
   }
+
+  .list ul { border-top: 0; }
+  .list li {
+    background: var(--surface);
+    border: 0;
+    border-radius: var(--r-md);
+    padding: 16px;
+    margin-bottom: 8px;
+  }
 </style>

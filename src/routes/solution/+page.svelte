@@ -320,4 +320,35 @@
     font-variant-numeric: tabular-nums;
   }
 
+
+  .roles { border-top: 0; }
+  .roles li {
+    background: var(--surface);
+    border: 0;
+    border-radius: var(--r-md);
+    padding: 16px;
+    margin-bottom: 8px;
+  }
+  .fix { border-top: 0; }
+  .fix li {
+    background: var(--surface);
+    border: 0;
+    border-radius: var(--r-md);
+    padding: 14px 16px;
+    margin-bottom: 8px;
+  }
+  .metrics { border-top: 0; }
+  .metrics li {
+    background: var(--surface);
+    border: 0;
+    border-radius: var(--r-md);
+    padding: 14px 16px;
+    margin-bottom: 8px;
+  }
+  .note {
+    border-top: 0;
+    background: var(--surface);
+    border-radius: var(--r-md);
+    padding: 14px 16px;
+  }
 </style>

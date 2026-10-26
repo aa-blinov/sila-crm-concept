@@ -376,4 +376,39 @@
     }
   }
 
+
+  .stage {
+    grid-template-columns: 1fr;
+    background: var(--surface);
+    border-radius: var(--r-md);
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    padding-bottom: 14px;
+  }
+  .stage::before, .stage__marker { display: none; }
+  .gates { border-top: 0; }
+  .gates li {
+    background: var(--surface);
+    border: 0;
+    border-radius: var(--r-md);
+    padding: 14px 16px;
+    margin-bottom: 8px;
+  }
+  .money { border-top: 0; }
+  .money li {
+    background: var(--surface);
+    border: 0;
+    border-radius: var(--r-md);
+    padding: 14px 16px;
+    margin-bottom: 8px;
+  }
+  .meta { background: transparent; border-top: 0; }
+  .meta__list { border-top: 0; }
+  .meta__list div {
+    background: var(--surface);
+    border: 0;
+    border-radius: var(--r-md);
+    padding: 12px 16px;
+    margin-bottom: 8px;
+  }
 </style>

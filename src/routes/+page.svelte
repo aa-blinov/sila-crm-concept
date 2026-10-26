@@ -43,6 +43,7 @@
 
 <section class="section section--tight">
   <div class="wrap">
+    <div class="panel">
     <h2 class="lead">Самое дорогое — не вход</h2>
     <p class="prose">
       Вход раздражает, но денег стоит другое. В системе 4 490 абонементов, и чтобы найти
@@ -55,6 +56,7 @@
       работу над этим с запасом. Поэтому в плане первой идёт не разработка приложений,
       а видимость продлений.
     </p>
+      </div>
   </div>
 </section>
 
@@ -196,4 +198,19 @@
       gap: clamp(32px, 5vw, 64px);
     }
   }
+
+  .route { border-top: 0; }
+  .route a {
+    background: var(--surface);
+    border: 0;
+    border-radius: var(--r-md);
+    margin-bottom: 8px;
+    padding: 14px 16px;
+  }
+  .panel {
+    background: var(--surface);
+    border-radius: var(--r-md);
+    padding: clamp(16px, 3vw, 24px);
+  }
+
 </style>
