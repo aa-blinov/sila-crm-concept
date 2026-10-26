@@ -9,7 +9,8 @@
     { href: u('/'), label: 'Обзор' },
     { href: u('/problems/'), label: 'Проблемы' },
     { href: u('/solution/'), label: 'Что делать' },
-    { href: u('/plan/'), label: 'План' }
+    { href: u('/plan/'), label: 'План' },
+    { href: u('/security/'), label: 'Защита' }
   ];
 
   const home = u('/');
@@ -155,7 +156,7 @@
     bottom: 0;
     z-index: 30;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 2px;
     padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
     background: #fff;
@@ -199,6 +200,13 @@
 
     .tabs__link {
       font-size: 0.6875rem;
+      line-height: 1.15;
+      padding: 0 2px;
+    }
+
+    .nav__link {
+      padding: 8px 8px;
+      font-size: 0.8125rem;
     }
   }
 </style>

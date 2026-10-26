@@ -82,6 +82,12 @@
           <span class="route__t">Этапы, ворота перед разработкой приложений и арифметика.</span>
         </a>
       </li>
+      <li>
+        <a href={u('/security/')}>
+          <span class="route__n">Защита</span>
+          <span class="route__t">Восемь находок по безопасности: чем грозят и в каком порядке закрывать.</span>
+        </a>
+      </li>
     </ol>
   </div>
 </section>
