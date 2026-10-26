@@ -1,5 +1,33 @@
 <script>
   import { u } from '$lib/url';
+
+  const shots = [
+    {
+      src: '/shots/crm-blank.webp',
+      alt: 'Пустая белая страница вместо карточки клиента',
+      title: 'Пустая страница',
+      text: 'Карточка клиента №184. Ни сообщения об ошибке, ни кнопки, ни подсказки.',
+      w: 760,
+      h: 640
+    },
+    {
+      src: '/shots/crm-tasks.webp',
+      alt: 'Список задач с датами 2022 и 2024 года',
+      title: 'Задачи с 2022 года',
+      text: 'Одна лента: ноябрь 2024, май 2022, апрель 2023. Фильтра по дате нет.',
+      w: 700,
+      h: 752
+    },
+    {
+      src: '/shots/crm-subscriptions.webp',
+      alt: 'Список абонементов, которые закончились в феврале 2022',
+      title: 'Абонементы: 225 страниц',
+      text: 'Первая страница открывается на феврале 2022. В восьмой строке: null/12 тренировок.',
+      w: 700,
+      h: 752
+    }
+  ];
+
   const items = [
     {
       tag: 'риск',
@@ -72,6 +100,30 @@
             <p>{item.text}</p>
             <p class="cost">{item.cost}</p>
           </div>
+        </li>
+      {/each}
+    </ul>
+  </div>
+</section>
+
+<section class="section shots">
+  <div class="wrap">
+    <h2>Как это выглядит</h2>
+    <p class="shots__note">
+      Настоящие экраны системы. Имена, аватары и телефоны скрыты, остальное как есть.
+    </p>
+    <ul class="shots__list">
+      {#each shots as s}
+        <li>
+          <figure>
+            <div class="shots__frame">
+              <img src={u(s.src)} alt={s.alt} width={s.w} height={s.h} loading="lazy" decoding="async" />
+            </div>
+            <figcaption>
+              <strong>{s.title}</strong>
+              <span>{s.text}</span>
+            </figcaption>
+          </figure>
         </li>
       {/each}
     </ul>
@@ -156,11 +208,66 @@
     max-width: 64ch;
   }
 
+  .shots__note {
+    color: var(--muted);
+    font-size: 0.9375rem;
+    max-width: 60ch;
+    margin-bottom: clamp(18px, 3vw, 26px);
+  }
+
+  .shots__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: clamp(18px, 3vw, 26px);
+  }
+
+  .shots__list figure {
+    margin: 0;
+    display: grid;
+    gap: 10px;
+  }
+
+  .shots__frame {
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    background: #fff;
+    box-shadow: var(--shadow-1);
+  }
+
+  .shots__frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .shots__list figcaption {
+    display: grid;
+    gap: 3px;
+    font-size: 0.875rem;
+    color: var(--ink-2);
+  }
+
+  .shots__list figcaption strong {
+    font-family: var(--cond);
+    font-size: 1.0625rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
   .cta {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 28px;
+  }
+
+  @media (min-width: 860px) {
+    .shots__list {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
   @media (min-width: 760px) {
