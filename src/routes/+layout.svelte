@@ -22,18 +22,15 @@
 
 <header class="bar">
   <div class="bar__in wrap">
-    <a class="brand" href={u('/')} aria-label="Сила Скилла, разбор продукта">
-      <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
-        <rect width="32" height="32" rx="7" fill="#ffffff" />
-        <rect x="8" y="18" width="4" height="7" rx="1.2" fill="#2d68c4" opacity="0.5" />
-        <rect x="14" y="13" width="4" height="12" rx="1.2" fill="#2d68c4" opacity="0.75" />
-        <rect x="20" y="7" width="4" height="18" rx="1.2" fill="#2d68c4" />
-        <circle cx="22" cy="7" r="2.2" fill="#e70314" />
-      </svg>
-      <span class="brand__text">
-        <strong>СИЛА СКИЛЛА</strong>
-        <span>разбор CRM</span>
-      </span>
+    <a class="brand" href={u('/')} aria-label="Сила Скилла, разбор CRM">
+      <img
+        class="brand__logo"
+        src={u('/brand/sila-logo-white.svg')}
+        alt="Сила Скилла"
+        width="120"
+        height="32"
+      />
+      <span class="brand__tag">разбор CRM</span>
     </a>
 
     <nav class="nav" aria-label="Разделы">
@@ -85,7 +82,22 @@
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    min-height: 56px;
+    min-height: 44px;
+  }
+
+  .brand__logo {
+    width: 112px;
+    height: auto;
+    display: block;
+    flex: none;
+  }
+
+  .brand__tag {
+    font-size: 0.6875rem;
+    color: rgba(255, 255, 255, 0.8);
+    padding-left: 10px;
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    white-space: nowrap;
   }
 
   .brand {
@@ -96,31 +108,9 @@
     color: #fff;
   }
 
-  .brand__mark {
-    width: 28px;
-    height: 28px;
-    flex: none;
-  }
 
-  .brand__text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.15;
-    min-width: 0;
-  }
 
-  .brand__text strong {
-    font-size: 0.8125rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    white-space: nowrap;
-  }
 
-  .brand__text span {
-    font-size: 0.6875rem;
-    color: rgba(255, 255, 255, 0.78);
-    white-space: nowrap;
-  }
 
   .nav {
     display: none;
@@ -128,9 +118,9 @@
   }
 
   .nav__link {
-    padding: 8px 12px;
+    padding: 6px 10px;
     border-radius: 6px;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     color: rgba(255, 255, 255, 0.86);
     transition: background-color 0.15s ease, color 0.15s ease;
   }
@@ -194,7 +184,7 @@
   }
 
   @media (max-width: 359px) {
-    .brand__text span {
+    .brand__tag {
       display: none;
     }
 
