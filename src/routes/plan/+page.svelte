@@ -1,68 +1,107 @@
 <script>
   import { u } from '$lib/url';
+
   const stages = [
     {
-      name: 'Копии и настройки защиты',
+      name: 'Копии и защита',
       time: '4 часа',
-      text: 'Проверяем, есть ли резервные копии, и если нет — настраиваем. В тот же заход закрываем то, что делается настройками: исходники, панель управления, заголовки, версии. Это одна работа с сервером, а не две.',
+      text: 'Проверяем, есть ли резервные копии, и если нет — настраиваем. В тот же день закрываем то, что открыто наружу: исходники, панель управления, служебные настройки.',
+      result: 'Систему можно потерять только вместе с сервером, а не по случайности.',
       kind: 'now'
     },
     {
-      name: 'Вход, сессии и падения',
+      name: 'Вход без нервов',
       time: '1 неделя',
-      text: 'Один адрес вместо выбора сервера, защита страниц от белых экранов, страница 404. Плюс ограничение попыток входа, сессии с отзывом и запрет чужим сайтам читать базу. Авторизация одна, поэтому делается одним куском.',
+      text: 'Один адрес вместо выбора сервера. Пустые экраны заменяются сообщением с кнопкой. Плюс ограничение попыток входа и возможность выгнать чужую сессию.',
+      result: 'Сотрудник входит с первого раза. Разлогинов и потерянных паролей нет.',
       kind: 'now'
     },
     {
-      name: 'Файлы и библиотеки',
+      name: 'Файлы и обновления',
       time: '1 неделя',
-      text: 'Закрываем список загрузок и выдачу файлов, обновляем две библиотеки. Идёт параллельно со входом: другой слой, другой разработчик.',
+      text: 'Фотографии и документы детей перестают быть доступны посторонним. Обновляем части программы, в которых нашлись известные уязвимости.',
+      result: 'Личные файлы видят только те, кому положено.',
       kind: 'now'
     },
     {
       name: 'Кому продлевать',
       time: '2–3 недели',
-      text: 'Список клиентов с истёкшим и истекающим абонементом: фильтр по залу, сортировка по сроку, кнопка написать, фильтры на экране задач. Здесь же закрываем публичный список клиентов: проверять надо те же страницы кабинета.',
+      text: 'Экран со списком тех, у кого абонемент заканчивается или закончился: фильтр по залу, сортировка по сроку, кнопка написать. Задачи больше не теряются в общей ленте.',
+      result: 'Появляется ежедневный список звонков. Это и возвращает деньги.',
       kind: 'money'
     },
     {
       name: 'Ворота',
       time: '1–2 дня',
-      text: 'Замер пяти цифр по уже накопленным данным. Решение о приложениях принимается по ним, а не по вкусу.',
+      text: 'Смотрим пять цифр, которые уже есть в системе: открывают ли родители кабинет, возвращаются ли, платят ли по ссылке.',
+      result: 'Решение про приложения принимается по цифрам, а не по вкусу.',
       kind: 'gate'
     },
     {
-      name: 'Приложения: тренер и семья',
+      name: 'Приложения для тренера и семьи',
       time: '4–6 недель',
-      text: 'Две сборки на одном ядре. Тренер собирается первым: он создаёт данные, без него приложение семьи пустое.',
+      text: 'Две сборки на одном ядре. Первым идёт тренер: он отмечает посещение в зале с телефона. Следом родитель видит расписание, абонемент и прогресс.',
+      result: 'Данные появляются там, где происходит работа, а не в офисе.',
       kind: 'later'
     },
     {
-      name: 'Уведомления в PWA',
+      name: 'Уведомления',
       time: '2–3 недели',
-      text: 'Web Push: на Android работает сразу, на iPhone с 16.4, если приложение добавлено на экран «Домой». Нужны сервис-воркер, подписки и один планировщик, иначе на пяти серверах пойдут дубли.',
+      text: 'Напоминания об окончании абонемента и о тренировке приходят в приложение. На Android сразу, на iPhone с 16.4 и если приложение добавлено на экран «Домой».',
+      result: 'Родитель узнаёт о продлении от вас, а не наоборот.',
       kind: 'later'
     },
     {
-      name: 'Геймификация и опросы',
+      name: 'Баллы и опросы',
       time: '2–3 недели',
-      text: 'Журнал баллов, уровни, витрина, пульс-опросы. Только личный прогресс, без рейтингов.',
+      text: 'Личный прогресс ребёнка: баллы, уровни, значки за возвращение. Короткие опросы родителям. Без рейтингов между детьми.',
+      result: 'Есть за что возвращаться, кроме тренировки.',
       kind: 'later'
     },
     {
       name: 'Экран владельца',
       time: '3–4 недели',
-      text: 'Шесть цифр и воронка продлений. Смысл появляется, когда тренеры и родители уже в системе.',
+      text: 'Шесть цифр на одном экране: продления, посещаемость, деньги по залам, отток.',
+      result: 'Управление по цифрам, а не по ощущениям.',
       kind: 'later'
     }
   ];
 
+  const gains = [
+    ['Вход перестаёт быть лотереей', 'Сотрудник открывает один адрес и попадает в систему. Никаких «у меня опять не пускает».'],
+    ['Продления становятся видны', 'Вместо 225 страниц без фильтров — один список «кому звонить на этой неделе».'],
+    ['Данные детей закрыты', 'Фотографии и документы видны только тем, кому положено. Это уже вопрос не репутации, а закона.'],
+    ['Приложения появляются, когда готовы данные', 'Тренер в зале, родитель в телефоне. Но только после ворот, а не по желанию.']
+  ];
+
+  const costs = [
+    ['Серверы сейчас', '21 000–38 500 ₽ в месяц', 'пять узлов и база в Selectel, Новосибирск'],
+    ['Если оставить два узла', '15 000–22 000 ₽ в месяц', 'нагрузка это позволяет: 1 832 клиента и 3 816 файлов'],
+    ['Домен .ru', '450 ₽ в год', 'плюс сертификаты и DNS бесплатно'],
+    ['Копии в хранилище', '100–300 ₽ в месяц', 'лежат отдельно от серверов'],
+    ['Постоянный режим', '4–6 часов в месяц', 'обновления, копии, сигналы, проверка раз в квартал'],
+    ['Работы по этапам', '13–19 человеко-недель', 'три-четыре месяца одного разработчика или около двух с половиной месяцев вдвоём']
+  ];
+
+  const risks = [
+    ['Данные детей открыты', 'Сейчас фотографии и документы может скачать кто угодно. Кроме репутации, это требования закона о персональных данных: штрафы и предписания.'],
+    ['База в одном экземпляре', 'Если копий нет, сбой диска или неудачное обновление стирают 31 тысячу тренировок. Восстанавливать будет нечего.'],
+    ['Деньги уходят молча', 'Продление безлимита стоит 55 000 ₽. Пока список продлений не виден, эти деньги уходят к конкурентам, и никто этого не замечает.']
+  ];
+
   const gates = [
-    ['Открытия кабинета', 'Сколько родителей вообще открывают публичную страницу за месяц.'],
+    ['Открытия кабинета', 'Сколько родителей вообще открывают страницу за месяц.'],
     ['Повторные заходы', 'Сколько из них возвращаются. Один заход ничего не значит.'],
     ['Оплаты по ссылке', 'Сколько оплат проходит через страницу оплаты.'],
-    ['Отклик на рассылки', 'Сколько родителей переходят по ссылке из рассылки. Показывает, работает ли канал вообще.'],
+    ['Отклик на рассылки', 'Сколько родителей переходят по ссылке из рассылки.'],
     ['Возраст 13+', 'Есть ли дети, которым телефон действительно нужен.']
+  ];
+
+  const needs = [
+    ['Доступ к серверам', 'Либо человек, который применит правки: часть работ делается настройками, без программиста.'],
+    ['Нерабочий час-два', 'Вход и сессии затронут всех сотрудников. Лучше вечером, чтобы никто не работал в этот момент.'],
+    ['Копия базы', 'Для проверки загрузки файлов. На рабочей системе такие проверки делать нельзя.'],
+    ['Решение по копиям', 'Проверить, есть ли резервные копии, и если нет — включить. Это единственный пункт, который нельзя отложить.']
   ];
 
   const money = [
@@ -70,27 +109,69 @@
     ['423 150 ₽', 'поступления зала «Сила» за месяц'],
     ['165 000 ₽', 'три удержанных клиента в месяц']
   ];
+
+  const tech = [
+    ['Фронтенд', 'React 17 на Create React App, Ant Design, MobX, Apollo Client'],
+    ['Бэкенд', 'Strapi 4, GraphQL, авторизация по JWT'],
+    ['Веб-сервер', 'nginx 1.18 и 1.28 на разных машинах, только HTTP/1.1, сертификаты Let’s Encrypt'],
+    ['Инфраструктура', 'пять серверов приложений на четырёх машинах, одна база, общее хранилище файлов'],
+    ['Объём данных', '1 832 клиента, 31 581 тренировка, 4 490 абонементов, 1 419 рассылок, 2 675 аккаунтов, 10 залов, 3 816 файлов']
+  ];
 </script>
 
 <svelte:head>
-  <title>План: этапы, сроки и ворота</title>
-  <meta name="description" content="Девять этапов со сроками, включая правки безопасности, ворота перед приложениями, постоянный режим и арифметика на реальных цифрах CRM." />
+  <title>План для владельца: что делаем, сколько стоит, что нужно от вас</title>
+  <meta
+    name="description"
+    content="План работ по CRM «Сила Скилла» для владельца: что получите, в каком порядке, сколько стоит и что нужно от вас."
+  />
 </svelte:head>
 
 <section class="head">
   <div class="wrap">
     <h1>План</h1>
     <p class="lede">
-      Порядок неслучаен: сначала дешёвое, что снимает ежедневное раздражение и закрывает
-      открытые двери, потом то, что возвращает деньги, и только затем приложения.
-      Оценки для команды из одного или двух разработчиков, точность плюс-минус тридцать
-      процентов.
+      Здесь только то, что нужно для решения: что вы получите, в каком порядке, сколько это
+      стоит и что потребуется от вас. Оценки для одного-двух разработчиков, точность
+      плюс-минус тридцать процентов.
     </p>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="wrap">
+    <div class="panel">
+      <p class="panel__lead">От вас нужно три решения</p>
+      <ol class="decide">
+        <li>Делать ли фундамент сейчас: копии, вход и закрытие данных. Это три недели и снимает риск потерять базу или вынести файлы детей.</li>
+        <li>Когда запускать приложения: сразу или после замера пяти цифр. Замер стоит два дня.</li>
+        <li>Кто отвечает за систему дальше. Постоянный режим — четыре–шесть часов в месяц.</li>
+      </ol>
+    </div>
   </div>
 </section>
 
 <section class="section">
   <div class="wrap">
+    <h2>Что вы получите</h2>
+    <ul class="gains">
+      {#each gains as g}
+        <li>
+          <h3>{g[0]}</h3>
+          <p>{g[1]}</p>
+        </li>
+      {/each}
+    </ul>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <h2>В каком порядке</h2>
+    <p class="intro">
+      Сначала дёшево и снимает ежедневное раздражение, потом то, что возвращает деньги,
+      и только затем приложения.
+    </p>
     <ol class="timeline">
       {#each stages as stage}
         <li class="stage stage--{stage.kind}">
@@ -101,6 +182,7 @@
               <span class="stage__time">{stage.time}</span>
             </div>
             <p>{stage.text}</p>
+            <p class="stage__result">{stage.result}</p>
           </div>
         </li>
       {/each}
@@ -110,11 +192,10 @@
 
 <section class="section band">
   <div class="wrap">
-    <h2>Ворота перед приложениями</h2>
+    <h2>Ворота: когда запускать приложения</h2>
     <p class="band__lede">
-      Фундамент нужен всем: здесь мнения сошлись. По приложениям разошлись: рынок говорит
-      «не строить», продукт и инженерия — «строить, но две сборки». Спор решается за один
-      день на данных.
+      Приложения стоят четыре-шесть недель и требуют, чтобы данные были в порядке. Перед
+      стартом смотрим пять цифр, которые уже есть в системе.
     </p>
     <ul class="gates">
       {#each gates as gate}
@@ -127,50 +208,29 @@
     <p class="band__after">
       Если страницу открывают единицы, приложение не спасёт: проблема не в обёртке.
       Если открывают часто, но не возвращаются, вопрос в содержании. И отдельно: пока файлы
-      и список клиентов открыты, кабинет родителям показывать нельзя. Приложение расширяет
-      аудиторию, а значит и утечку.
-    </p>
-  </div>
-</section>
-
-<section class="section band">
-  <div class="wrap">
-    <h2>Дальше — постоянно</h2>
-    <p class="band__lede">
-      Разовые правки закрывают то, что открыто сейчас. Но система живёт: выходят обновления
-      Strapi и библиотек, меняются сотрудники, копится мусор в правах доступа. Без режима
-      всё это возвращается через полгода. Это не проект, а обслуживание.
-    </p>
-    <ul class="gates">
-      <li>
-        <h3>Раз в месяц — обновления</h3>
-        <p>Обновляем Strapi и библиотеки, прогоняем вход, календарь и кабинет. Час работы, зато без сюрпризов.</p>
-      </li>
-      <li>
-        <h3>Раз в неделю — копии</h3>
-        <p>Смотрим, что резервная копия создалась и лежит на другом сервере. Раз в квартал пробуем восстановить на тестовой машине: копия, которую не проверяли, копией не считается.</p>
-      </li>
-      <li>
-        <h3>Постоянно — сигналы</h3>
-        <p>Уведомления на серию неудачных входов и на изменение прав администратора. Плюс контроль, что сертификаты и место на дисках в порядке.</p>
-      </li>
-      <li>
-        <h3>Раз в квартал — внешняя проверка</h3>
-        <p>Повторяем этот аудит: новые функции добавляют новые двери. Час сканирования дешевле, чем разбор последствий.</p>
-      </li>
-    </ul>
-    <p class="band__after">
-      Ориентир: четыре–шесть часов в месяц. Если отдать на обслуживание, это фиксированная
-      сумма, а не сюрприз в момент сбоя. И это же снимает вопрос «а кто за это отвечает»:
-      у системы появляется хозяин.
+      и список клиентов открыты, кабинет родителям показывать нельзя.
     </p>
   </div>
 </section>
 
 <section class="section">
   <div class="wrap">
-    <h2>Арифметика</h2>
-    <p class="lede">Цифры из системы, не прогноз.</p>
+    <h2>Сколько это стоит</h2>
+    <p class="intro">
+      Серверы и домен — деньги, работы — время. Ставку разработчика подставляйте свою:
+      здесь человеко-недели, а не рубли.
+    </p>
+    <ul class="costs">
+      {#each costs as c}
+        <li>
+          <span class="costs__name">{c[0]}</span>
+          <span class="costs__sum">{c[1]}</span>
+          <span class="costs__note">{c[2]}</span>
+        </li>
+      {/each}
+    </ul>
+
+    <h3 class="sub">Что приносят деньги</h3>
     <ul class="money">
       {#each money as m}
         <li>
@@ -179,190 +239,345 @@
         </li>
       {/each}
     </ul>
-    <p class="close">
-      Отсюда и порядок: три возвращённых клиента в месяц окупают работу над продлениями,
-      а приложение такими деньгами не измеряется.
+    <p class="after">
+      Три возвращённых клиента в месяц окупают работу над продлениями с запасом. Приложение
+      такими деньгами не измеряется: его считают по удержанию, и поэтому по нему сначала ворота.
     </p>
   </div>
 </section>
 
-
-<section class="meta">
+<section class="section">
   <div class="wrap">
-    <h2>Техническая база</h2>
-    <p class="meta__lede">
-      Что стоит сейчас. Это констатация, а не предложение: все цифры сняты с работающей
-      системы 26 октября 2026 года, данные клиентов не публикуются. Стоимость — оценка
-      по публичному прайсу, а не счёт.
+    <h2>Что будет, если не делать</h2>
+    <ul class="risks">
+      {#each risks as r}
+        <li>
+          <h3>{r[0]}</h3>
+          <p>{r[1]}</p>
+        </li>
+      {/each}
+    </ul>
+  </div>
+</section>
+
+<section class="section band">
+  <div class="wrap">
+    <h2>Дальше — постоянно</h2>
+    <p class="band__lede">
+      Разовые правки закрывают то, что открыто сейчас. Но система живёт: выходят обновления,
+      меняются сотрудники. Без режима всё возвращается через полгода. Это не проект,
+      а обслуживание.
     </p>
-    <dl class="meta__list">
-      <div><dt>Режим работы</dt><dd>только чтение: ни одной записи в CRM не изменено</dd></div>
-      <div><dt>Фронтенд</dt><dd>React 17 на Create React App, Ant Design, MobX, Apollo Client</dd></div>
-      <div><dt>Бэкенд</dt><dd>Strapi 4, GraphQL, авторизация по JWT</dd></div>
-      <div><dt>Веб-сервер</dt><dd>nginx версий 1.18 и 1.28 на разных машинах, только HTTP/1.1, сертификаты Let's Encrypt</dd></div>
-      <div><dt>Инфраструктура</dt><dd>пять серверов приложений на четырёх машинах, одна база, общее хранилище файлов</dd></div>
-      <div><dt>Серверы и хостинг</dt><dd>Selectel, Новосибирск. Считал по публичному прайсу: пять облачных серверов 2×4 ГБ по 3 120 ₽ плюс база 5 640 ₽ — около 21 000 ₽ в месяц. Если узлы крупнее, 4×8 ГБ по 5 640 ₽ и база 10 290 ₽ — около 38 500 ₽.</dd></div>
-      <div><dt>Если сократить</dt><dd>два узла 4×8 ГБ и база 8×16: около 21 500 ₽ в месяц. Двух узлов хватает: 1 832 клиента и 3 816 файлов. Пять узлов — это ещё и пять точек отказа и пять мест для обновления.</dd></div>
-      <div><dt>Домен и сертификаты</dt><dd>Selectel: регистрация .ru — 120 ₽, продление 450 ₽ в год. Сертификат Let's Encrypt и DNS-хостинг там же бесплатно, продлеваются сами.</dd></div>
-      <div><dt>Резервные копии</dt><dd>объектное хранилище от 100 до 300 ₽ в месяц, плюс проверка восстановления раз в квартал.</dd></div>
-      <div><dt>Объём данных</dt><dd>1 832 клиента, 31 581 тренировка, 4 490 абонементов, 1 419 рассылок, 2 675 аккаунтов, 10 залов, 3 816 файлов</dd></div>
-      <div><dt>Доля выручки</dt><dd>всё вместе — серверы, домен, копии — это 5–9 процентов поступлений одного зала «Сила» (423 150 ₽ в месяц). Дороже обходится не инфраструктура, а простой.</dd></div>
-    </dl>
+    <ul class="gates">
+      <li>
+        <h3>Раз в месяц: обновления</h3>
+        <p>Обновляем программу и её части, прогоняем вход, календарь и кабинет. Час работы.</p>
+      </li>
+      <li>
+        <h3>Раз в неделю: копии</h3>
+        <p>Смотрим, что копия создалась и лежит на другом сервере. Раз в квартал пробуем восстановить: непроверенная копия копией не считается.</p>
+      </li>
+      <li>
+        <h3>Постоянно: сигналы</h3>
+        <p>Уведомления на серию неудачных входов и на смену прав администратора, контроль сертификатов и места на дисках.</p>
+      </li>
+      <li>
+        <h3>Раз в квартал: внешняя проверка</h3>
+        <p>Повторяем проверку безопасности: новые функции добавляют новые двери.</p>
+      </li>
+    </ul>
+    <p class="band__after">
+      Ориентир: четыре–шесть часов в месяц. Если отдать на обслуживание, это фиксированная
+      сумма, а не сюрприз в момент сбоя. И понятно, кто отвечает.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <h2>Что нужно от вас</h2>
+    <ul class="needs">
+      {#each needs as n}
+        <li>
+          <h3>{n[0]}</h3>
+          <p>{n[1]}</p>
+        </li>
+      {/each}
+    </ul>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="wrap">
+    <details class="tech">
+      <summary>Технические детали для разработчика</summary>
+      <p class="tech__note">
+        Что стоит сейчас. Снято с работающей системы 26 октября 2026 года в режиме чтения:
+        ни одной записи не изменено. Данные клиентов не публикуются.
+      </p>
+      <dl class="tech__list">
+        {#each tech as t}
+          <div><dt>{t[0]}</dt><dd>{t[1]}</dd></div>
+        {/each}
+      </dl>
+    </details>
   </div>
 </section>
 
 <style>
   .head {
-    padding: clamp(32px, 7vw, 64px) 0 clamp(20px, 4vw, 32px);
+    padding: clamp(24px, 5vw, 48px) 0 clamp(8px, 2vw, 14px);
   }
 
   .head h1 {
-    margin-bottom: 18px;
+    margin-bottom: 12px;
+  }
+
+  .panel {
+    background: var(--surface);
+    border-radius: var(--r-md);
+    padding: clamp(16px, 3vw, 24px);
+  }
+
+  .panel__lead {
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  .decide {
+    margin: 0;
+    padding-left: 20px;
+    display: grid;
+    gap: 8px;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .gains,
+  .risks,
+  .needs {
+    list-style: none;
+    margin: clamp(14px, 2vw, 20px) 0 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+
+  .gains li,
+  .risks li,
+  .needs li {
+    background: var(--surface);
+    border-radius: var(--r-md);
+    padding: 16px;
+    display: grid;
+    gap: 4px;
+  }
+
+  .gains h3,
+  .risks h3,
+  .needs h3 {
+    font-size: 1rem;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .gains p,
+  .risks p,
+  .needs p {
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+    max-width: 66ch;
+  }
+
+  .intro {
+    color: var(--ink-2);
+    max-width: 64ch;
+    margin-bottom: 6px;
   }
 
   .timeline {
     list-style: none;
-    margin: 0;
+    margin: clamp(14px, 2vw, 20px) 0 0;
     padding: 0;
-    position: relative;
   }
 
   .stage {
-    display: grid;
-    grid-template-columns: 26px 1fr;
-    gap: 16px;
-    padding-bottom: clamp(22px, 3.5vw, 32px);
     position: relative;
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 12px;
+    padding-bottom: 10px;
   }
 
-  .stage:last-child {
-    padding-bottom: 0;
-  }
-
-  .stage::before {
+  .stage:not(:last-child)::before {
     content: '';
     position: absolute;
-    left: 12px;
-    top: 22px;
+    left: 11px;
+    top: 18px;
     bottom: 0;
-    width: 2px;
+    width: 1px;
     background: var(--line);
   }
 
-  .stage:last-child::before {
-    display: none;
-  }
-
   .stage__marker {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
+    margin: 5px 0 0 6px;
     border-radius: 50%;
-    margin: 6px 0 0 5px;
     border: 2px solid var(--ink);
     background: var(--ink);
     z-index: 1;
   }
 
-        .stage--later .stage__marker {
+  .stage--later .stage__marker {
     border-color: var(--muted);
     background: var(--paper);
+  }
+
+  .stage__body {
+    background: var(--surface);
+    border-radius: var(--r-md);
+    padding: 14px 16px;
+    display: grid;
+    gap: 6px;
   }
 
   .stage__top {
     display: flex;
     align-items: baseline;
+    justify-content: space-between;
     gap: 12px;
     flex-wrap: wrap;
-    margin-bottom: 6px;
   }
 
   .stage__top h3 {
-    font-size: var(--step-2);
-    line-height: 1.2;
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
   }
 
   .stage__time {
     font-size: 0.8125rem;
     color: var(--muted);
-    font-variant-numeric: tabular-nums;
     white-space: nowrap;
+    font-variant-numeric: tabular-nums;
   }
 
   .stage__body p {
     color: var(--ink-2);
-    max-width: 62ch;
     font-size: 0.9375rem;
+    max-width: 66ch;
+  }
+
+  .stage__result {
+    color: var(--ink) !important;
+    border-top: 1px solid var(--line);
+    padding-top: 8px;
   }
 
   .band {
     border-top: 1px solid var(--line);
   }
 
-  .band h2 {
-    margin-bottom: 14px;
-  }
-
   .band__lede {
     color: var(--ink-2);
-    max-width: 66ch;
-    margin-bottom: clamp(24px, 4vw, 32px);
+    max-width: 64ch;
+    margin-bottom: 16px;
   }
 
   .gates {
     list-style: none;
     margin: 0;
     padding: 0;
-    border-top: 1px solid var(--line);
+    display: grid;
+    gap: 8px;
   }
 
   .gates li {
-    padding: 14px 0;
-    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: var(--r-md);
+    padding: 14px 16px;
   }
 
   .gates h3 {
-    font-family: var(--sans);
     font-size: 0.9375rem;
-    font-weight: 500;
-    letter-spacing: 0;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
   }
 
   .gates p {
-    font-size: 0.875rem;
-    color: var(--muted);
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+    max-width: 66ch;
   }
 
   .band__after {
-    margin-top: 20px;
+    margin-top: 16px;
     color: var(--ink-2);
-    font-size: 0.9375rem;
     max-width: 64ch;
+    font-size: 0.9375rem;
+  }
+
+  .costs {
+    list-style: none;
+    margin: 16px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+
+  .costs li {
+    background: var(--surface);
+    border-radius: var(--r-md);
+    padding: 14px 16px;
+    display: grid;
+    gap: 2px;
+  }
+
+  .costs__name {
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  .costs__sum {
+    font-size: 1.0625rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .costs__note {
+    font-size: 0.875rem;
+    color: var(--ink-2);
+  }
+
+  .sub {
+    margin-top: clamp(24px, 4vw, 32px);
+    margin-bottom: 4px;
+    font-size: 1rem;
   }
 
   .money {
     list-style: none;
-    margin: clamp(20px, 3vw, 28px) 0 0;
+    margin: 12px 0 0;
     padding: 0;
-    border-top: 1px solid var(--line);
+    display: grid;
+    gap: 8px;
   }
 
   .money li {
+    background: var(--surface);
+    border-radius: var(--r-md);
+    padding: 12px 16px;
     display: flex;
     align-items: baseline;
-    gap: 16px;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--line);
+    gap: 14px;
     flex-wrap: wrap;
   }
 
   .money span {
-    font-family: var(--sans);
-    font-size: 1.0625rem;
-    font-weight: 500;
-    color: var(--ink);
+    font-family: var(--cond);
+    font-size: 1.125rem;
+    font-weight: 700;
     font-variant-numeric: tabular-nums;
-    min-width: 9ch;
   }
 
   .money p {
@@ -370,95 +585,64 @@
     font-size: 0.9375rem;
   }
 
-  .close {
-    margin-top: 22px;
+  .after {
+    margin-top: 14px;
     color: var(--ink-2);
-    max-width: 62ch;
-  }
-
-
-  @media (min-width: 760px) {
-  }
-  .meta {
-    background: var(--surface);
-    border-top: 1px solid var(--line);
-  }
-
-  .meta h2 {
-    margin-bottom: 10px;
-  }
-
-  .meta__lede {
-    color: var(--muted);
+    max-width: 64ch;
     font-size: 0.9375rem;
-    max-width: 62ch;
-    margin-bottom: clamp(20px, 3vw, 28px);
   }
 
-  .meta__list {
-    margin: 0;
-    border-top: 1px solid var(--line);
+  .tech {
+    background: var(--surface);
+    border-radius: var(--r-md);
+    padding: 14px 16px;
   }
 
-  .meta__list div {
-    display: grid;
-    gap: 4px;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--line);
+  .tech summary {
+    cursor: pointer;
+    font-size: 0.9375rem;
+    color: var(--blue);
   }
 
-  .meta__list dt {
-    font-size: 0.8125rem;
+  .tech__note {
+    margin-top: 10px;
     color: var(--muted);
-  }
-
-  .meta__list dd {
-    margin: 0;
-    color: var(--ink-2);
+    font-size: 0.875rem;
     max-width: 66ch;
   }
 
+  .tech__list {
+    margin: 12px 0 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .tech__list div {
+    display: grid;
+    gap: 2px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .tech__list dt {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .tech__list dd {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--ink-2);
+  }
+
   @media (min-width: 760px) {
-    .meta__list div {
-      grid-template-columns: 200px 1fr;
-      gap: 24px;
+    .stage__body {
+      padding: 16px 20px;
+    }
+
+    .tech__list div {
+      grid-template-columns: 160px 1fr;
+      gap: 16px;
       align-items: baseline;
     }
-  }
-
-
-  .stage {
-    grid-template-columns: 1fr;
-    background: var(--surface);
-    border-radius: var(--r-md);
-    padding: 14px 16px;
-    margin-bottom: 8px;
-    padding-bottom: 14px;
-  }
-  .stage::before, .stage__marker { display: none; }
-  .gates { border-top: 0; }
-  .gates li {
-    background: var(--surface);
-    border: 0;
-    border-radius: var(--r-md);
-    padding: 14px 16px;
-    margin-bottom: 8px;
-  }
-  .money { border-top: 0; }
-  .money li {
-    background: var(--surface);
-    border: 0;
-    border-radius: var(--r-md);
-    padding: 14px 16px;
-    margin-bottom: 8px;
-  }
-  .meta { background: transparent; border-top: 0; }
-  .meta__list { border-top: 0; }
-  .meta__list div {
-    background: var(--surface);
-    border: 0;
-    border-radius: var(--r-md);
-    padding: 12px 16px;
-    margin-bottom: 8px;
   }
 </style>
