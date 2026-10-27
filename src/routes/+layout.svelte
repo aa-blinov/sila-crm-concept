@@ -94,9 +94,9 @@
 
   .brand__tag {
     font-size: 0.6875rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.93);
     padding-left: 10px;
-    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    border-left: 1px solid rgba(255, 255, 255, 0.45);
     white-space: nowrap;
   }
 
@@ -121,7 +121,7 @@
     padding: 6px 10px;
     border-radius: 6px;
     font-size: 0.8125rem;
-    color: rgba(255, 255, 255, 0.86);
+    color: rgba(255, 255, 255, 0.96);
     transition: background-color 0.15s ease, color 0.15s ease;
   }
 
